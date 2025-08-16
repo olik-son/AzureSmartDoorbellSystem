@@ -85,3 +85,57 @@ Remotely control webcam settings:
 http://<your Raspi Address>:8089
 ```
 
+### Reconfigure the Motion software to automatically detect motion and save files to a specified path
+
+Here are relevant excerpts of Motion’s config file at `/etc/motion/motion.conf`, with some notes. Modify the file changing parameters rather than control-c/v.
+
+```conf
+# >>> Change this to "off" because systemd starts this service
+# daemon off
+
+# >>> Make sure the `motion` group has write access - first create directory using mkdir /videos
+target_dir /videos
+
+# >>> This was where my webcam mounted, but may not be for you.
+video_device /dev/video0
+
+############################################################
+# Image Processing configuration parameters
+############################################################
+
+width 1280
+height 720
+framerate 30
+
+############################################################
+# Motion detection configuration parameters
+############################################################
+
+# >>> I tweaked these, may tweak more... the docs are good
+threshold 600
+minimum_motion_frames 3
+event_gap 15
+pre_capture 5
+post_capture 60
+
+############################################################
+# Script execution configuration parameters
+############################################################
+
+# >>> See above!
+on_event_start
+
+# >>> Explained below; handles Stream and Webhook #2
+#     "%f" is a placeholder for the full path to the mp4
+on_movie_end /opt/video-upload.bash %f >> /videos/on_movie_end.log 2>&1
+
+############################################################
+# Movie output configuration parameters
+############################################################
+
+movie_output on
+movie_max_time 600
+movie_quality 80
+movie_codec mp4
+```
+
