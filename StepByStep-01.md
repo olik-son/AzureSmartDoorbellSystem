@@ -27,6 +27,13 @@ We will be using it as a traditional ring door button, e.g., on a gate.
 
 ## Install Software
 
+Copy the repository to your Raspberry:
+```
+cd /opt
+sudo git clone https://github.com/MariuszFerdyn/AzureSmartDoorbellSystem.git
+sudo chown -R $USER:$USER /opt/AzureSmartDoorbellSystem
+```
+
 ### Camera Setup
 
 To enable your camera module, run:
@@ -127,7 +134,7 @@ on_event_start
 
 # >>> Explained below; handles Stream and Webhook #2
 #     "%f" is a placeholder for the full path to the mp4
-on_movie_end /opt/video-upload.bash %f >> /videos/on_movie_end.log 2>&1
+on_movie_end /opt/AzureSmartDoorbellSystem/VideoUpload.sh %f >> /videos/on_movie_end.log 2>&1
 
 ############################################################
 # Movie output configuration parameters
@@ -138,4 +145,71 @@ movie_max_time 600
 movie_quality 80
 movie_codec mp4
 ```
+
+### Install Azure CLI for Uploading Videos to Azure
+
+Run the following commands to ensure all prerequisites are installed:
+
+```
+sudo apt install libffi-dev python3-dev python3-pip openssl
+```
+
+Once the prerequisites are installed, use the official Microsoft script to install the Azure CLI:
+
+```
+curl -L https://aka.ms/InstallAzureCli | bash
+```
+
+### Create an Azure Storage Account and Blob Container
+
+1. Sign in to your Azure account:
+    ```
+    az login
+    ```
+
+2. Create a resource group:
+    ```
+    az group create --name <resource-group> --location <location>
+    ```
+
+3. Create a storage account:
+    ```
+    az storage account create --name <storage-account> --resource-group <resource-group> --location <location> --sku Standard_ZRS --encryption-services blob
+    ```
+
+4. Assign yourself the Storage Blob Data Contributor role:
+    ```
+    az ad signed-in-user show --query id -o tsv | az role assignment create --role "Storage Blob Data Contributor" --assignee @- --scope "/subscriptions/<subscription>/resourceGroups/<resource-group>/providers/Microsoft.Storage/storageAccounts/<storage-account>"
+    ```
+
+5. Create a blob container:
+    ```
+    az storage container create --account-name <storage-account> --name videos --auth-mode login
+    ```
+
+6. Create and display a SAS token that allows you to upload files only to the `videos` container in your storage account:
+
+```
+az storage container generate-sas \
+  --account-name <storage-account> \
+  --name videos \
+  --permissions w \
+  --expiry <YYYY-MM-DD> \
+  --auth-mode login \
+  --as-user \
+  --output tsv
+```
+
+Replace `<storage-account>` with your storage account name and `<YYYY-MM-DD>` with your desired expiry date (e.g., `2027-12-31`).  
+This SAS token grants write-only access to the `videos` container.
+
+7. Make VideoUpload.sh executable and update it with your SAS token and storage account:
+
+```
+sudo chmod +x /opt/AzureSmartDoorbellSystem/VideoUpload.sh
+```
+
+Edit `/opt/AzureSmartDoorbellSystem/VideoUpload.sh` and replace the placeholders `<storage-account>` and `<your_sas_token>` with your actual storage account name and the SAS token you generated above.
+
+*** For now, all new videos should be uploaded to your Storage Account. ***
 
