@@ -213,3 +213,17 @@ Edit `/opt/AzureSmartDoorbellSystem/VideoUpload.sh` and replace the placeholders
 
 *** For now, all new videos should be uploaded to your Storage Account. ***
 
+## Notifications for New Videos
+
+You can use standard Azure functionality to notify users about new videos by SMS, email, or other channels. One recommended approach is to use an Azure Logic App:
+
+- **Logic Apps** can monitor your storage account for new blobs (videos) and trigger automated workflows.
+- You can configure Logic Apps to send notifications via SMS (using Twilio or Azure Communication Services), email (using Outlook, Gmail, or SMTP), or even post to Microsoft Teams or Slack.
+- Logic Apps can also integrate with other Azure services, databases, or custom APIs for advanced automation.
+
+**Example workflow:**
+1. Logic App is triggered when a new video is uploaded to the `videos` container.
+2. The Logic App sends an email or SMS notification to the desired recipients with details about the new video.
+3. Optionally, you can include a link to the video or additional metadata in the notification.
+
+For more details, see the official documentation: [Azure Logic Apps Documentation](https://learn.microsoft.com/en-us/azure/logic-apps/)
