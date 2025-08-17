@@ -211,7 +211,7 @@ sudo chmod +x /opt/AzureSmartDoorbellSystem/VideoUpload.sh
 
 Edit `/opt/AzureSmartDoorbellSystem/VideoUpload.sh` and replace the placeholders `<storage-account>` and `<your_sas_token>` with your actual storage account name and the SAS token you generated above.
 
-*** For now, all new videos should be uploaded to your Storage Account. ***
+***For now, all new videos should be uploaded to your Storage Account.***
 
 ## Notifications for New Videos
 
