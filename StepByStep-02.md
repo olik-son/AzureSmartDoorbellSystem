@@ -66,7 +66,6 @@ chmod 755 01-InteractWithDHT21.sh
 
 This behavior is normal due to the error in nev version of library (not always temperature will be taken):
 ```
-mf@pi1:~/AirConditionIoTCentral/01-DHT11 $ python3 InteractWithDHT11.py
 Attempt 1 failed: A full buffer was not returned. Try again.
 Attempt 2 failed: A full buffer was not returned. Try again.
 Attempt 3 failed: A full buffer was not returned. Try again.
