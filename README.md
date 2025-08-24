@@ -4,8 +4,8 @@
 
 This cutting-edge smart doorbell system combines the power of Raspberry Pi microcomputing with Microsoft Azure cloud services to create an intelligent, automated home security solution that revolutionizes traditional doorbell functionality.
 
-[Step-by-Step Guide 01 - basic functionality - video detection and upload to Cloud](StepByStep-01.md)
-[Step-by-Step Guide 02 - sending temperature](StepByStep-02.md)
+- [Step-by-Step Guide 01 - basic functionality - video detection and upload to Cloud](StepByStep-01.md)
+- [Step-by-Step Guide 02 - sending temperature](StepByStep-02.md)
 ## Key Features
 
 ### Intelligent Motion Detection
