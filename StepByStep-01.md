@@ -16,7 +16,7 @@ The minimum hardware required is a compatible camera connected to your Raspberry
 
 #### Temperature and Humidity Sensor DHT21 (AM2301)
 
-See 
+See [Step-by-Step Guide 02 - sending temperature](StepByStep-02.md)
 
 #### Button
 
