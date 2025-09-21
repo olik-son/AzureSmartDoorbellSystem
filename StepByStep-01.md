@@ -8,6 +8,11 @@ After a fresh installation, it is wise to update the operating system.
 sudo apt update
 sudo apt upgrade -y
 ```
+
+To anable vnc invoke: 
+```
+sudo raspi-config nonint get_vnc
+```
 ## Minimum Hardware
 
 The minimum hardware required is a compatible camera connected to your Raspberry Pi.
